@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Racing Telemetry Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <h1 class="header__title">Racing Telemetry Analyzer</h1>
+                <p class="header__subtitle">Professional Setup Analysis & Recommendations</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container">
+                
+                <!-- Upload Section -->
+                <section class="upload-section" id="uploadSection">
+                    <div class="card upload-card">
+                        <div class="card__body">
+                            <div class="upload-area" id="uploadArea">
+                                <div class="upload-area__icon">📊</div>
+                                <h3>Upload Telemetry Data</h3>
+                                <p>Drag and drop your CSV file or click to browse</p>
+                                <input type="file" id="fileInput" accept=".csv" class="file-input">
+                                <button class="btn btn--primary" id="browseBtn">Browse Files</button>
+                            </div>
+                            <div class="file-info hidden" id="fileInfo">
+                                <h4>File Preview</h4>
+                                <div class="file-details" id="fileDetails"></div>
+                                <div class="file-preview" id="filePreview"></div>
+                                <button class="btn btn--primary" id="analyzeBtn">Analyze Data</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Loading Section -->
+                <section class="loading-section hidden" id="loadingSection">
+                    <div class="card">
+                        <div class="card__body">
+                            <div class="loading-spinner"></div>
+                            <h3>Processing Telemetry Data</h3>
+                            <p id="loadingStatus">Analyzing corners and vehicle dynamics...</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Results Dashboard -->
+                <section class="results-section hidden" id="resultsSection">
+                    
+                    <!-- Summary Cards -->
+                    <div class="summary-grid">
+                        <div class="card summary-card">
+                            <div class="card__body">
+                                <div class="summary-metric">
+                                    <div class="metric-value" id="totalCorners">0</div>
+                                    <div class="metric-label">Total Corners</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card summary-card">
+                            <div class="card__body">
+                                <div class="summary-metric">
+                                    <div class="metric-value" id="slowCorners">0</div>
+                                    <div class="metric-label">Slow Corners</div>
+                                    <div class="metric-sublabel">&lt; 100 km/h</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card summary-card">
+                            <div class="card__body">
+                                <div class="summary-metric">
+                                    <div class="metric-value" id="midCorners">0</div>
+                                    <div class="metric-label">Mid-Speed</div>
+                                    <div class="metric-sublabel">100-180 km/h</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card summary-card">
+                            <div class="card__body">
+                                <div class="summary-metric">
+                                    <div class="metric-value" id="highCorners">0</div>
+                                    <div class="metric-label">High-Speed</div>
+                                    <div class="metric-sublabel">&gt; 180 km/h</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Tabs -->
+                    <div class="nav-tabs">
+                        <button class="nav-tab active" data-tab="overview">Overview</button>
+                        <button class="nav-tab" data-tab="corners">Corner Analysis</button>
+                        <button class="nav-tab" data-tab="recommendations">Setup Recommendations</button>
+                        <button class="nav-tab" data-tab="charts">Data Visualization</button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        
+                        <!-- Overview Tab -->
+                        <div class="tab-panel active" id="overview">
+                            <div class="results-grid">
+                                <div class="card">
+                                    <div class="card__body">
+                                        <h3>Balance Analysis</h3>
+                                        <div class="balance-indicators">
+                                            <div class="balance-item">
+                                                <span class="balance-label">Slow Corners</span>
+                                                <div class="balance-bar">
+                                                    <div class="balance-fill" id="slowBalance"></div>
+                                                </div>
+                                                <span class="balance-text" id="slowBalanceText">Analyzing...</span>
+                                            </div>
+                                            <div class="balance-item">
+                                                <span class="balance-label">Mid-Speed</span>
+                                                <div class="balance-bar">
+                                                    <div class="balance-fill" id="midBalance"></div>
+                                                </div>
+                                                <span class="balance-text" id="midBalanceText">Analyzing...</span>
+                                            </div>
+                                            <div class="balance-item">
+                                                <span class="balance-label">High-Speed</span>
+                                                <div class="balance-bar">
+                                                    <div class="balance-fill" id="highBalance"></div>
+                                                </div>
+                                                <span class="balance-text" id="highBalanceText">Analyzing...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card__body">
+                                        <h3>Critical Issues</h3>
+                                        <div class="issues-list" id="issuesList">
+                                            <!-- Issues will be populated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Corner Analysis Tab -->
+                        <div class="tab-panel" id="corners">
+                            <div class="card">
+                                <div class="card__body">
+                                    <h3>Detailed Corner Analysis</h3>
+                                    <div class="corners-list" id="cornersList">
+                                        <!-- Corner details will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendations Tab -->
+                        <div class="tab-panel" id="recommendations">
+                            <div class="recommendations-grid">
+                                <div class="card recommendation-card">
+                                    <div class="card__body">
+                                        <h3>🏎️ Tires</h3>
+                                        <div class="recommendation-list" id="tiresRecommendations"></div>
+                                    </div>
+                                </div>
+                                <div class="card recommendation-card">
+                                    <div class="card__body">
+                                        <h3>✈️ Aerodynamics</h3>
+                                        <div class="recommendation-list" id="aeroRecommendations"></div>
+                                    </div>
+                                </div>
+                                <div class="card recommendation-card">
+                                    <div class="card__body">
+                                        <h3>🔧 Suspension</h3>
+                                        <div class="recommendation-list" id="suspensionRecommendations"></div>
+                                    </div>
+                                </div>
+                                <div class="card recommendation-card">
+                                    <div class="card__body">
+                                        <h3>🛑 Brakes</h3>
+                                        <div class="recommendation-list" id="brakesRecommendations"></div>
+                                    </div>
+                                </div>
+                                <div class="card recommendation-card">
+                                    <div class="card__body">
+                                        <h3>⚙️ Drivetrain</h3>
+                                        <div class="recommendation-list" id="drivetrainRecommendations"></div>
+                                    </div>
+                                </div>
+                                <div class="card recommendation-card">
+                                    <div class="card__body">
+                                        <h3>💻 Electronics</h3>
+                                        <div class="recommendation-list" id="electronicsRecommendations"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Tab -->
+                        <div class="tab-panel" id="charts">
+                            <div class="charts-grid">
+                                <div class="card chart-card">
+                                    <div class="card__body">
+                                        <h3>Speed & G-Forces</h3>
+                                        <div class="chart-container" style="position: relative; height: 300px;">
+                                            <canvas id="speedChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card chart-card">
+                                    <div class="card__body">
+                                        <h3>Steering Analysis</h3>
+                                        <div class="chart-container" style="position: relative; height: 300px;">
+                                            <canvas id="steeringChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export Section -->
+                    <div class="export-section">
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Export Analysis</h3>
+                                <div class="export-buttons">
+                                    <button class="btn btn--secondary" id="exportReportBtn">Export Report</button>
+                                    <button class="btn btn--secondary" id="exportSettingsBtn">Export Settings</button>
+                                    <button class="btn btn--outline" id="newAnalysisBtn">New Analysis</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
