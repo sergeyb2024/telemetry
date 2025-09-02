@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACC Telemetry Analysis & Setup Optimization</title>
+    <title>ACC Professional Telemetry Analysis & Setup Optimization</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -12,8 +12,8 @@
         <!-- Header -->
         <header class="app-header">
             <div class="container">
-                <h1>ACC Telemetry Analysis & Setup Optimization</h1>
-                <p class="app-subtitle">Professional Racing Engineering Tool</p>
+                <h1>ACC Professional Telemetry Analysis</h1>
+                <p class="app-subtitle">Advanced Racing Engineering Tool with USOS Analysis</p>
             </div>
         </header>
 
@@ -22,7 +22,7 @@
             <!-- Car Selection Section -->
             <section class="card">
                 <div class="card__header">
-                    <h2>1. Car Selection</h2>
+                    <h2>1. Car Selection & Current Setup</h2>
                 </div>
                 <div class="card__body">
                     <div class="form-group">
@@ -46,6 +46,10 @@
                                 <span id="carWheelbase" class="detail-value"></span>
                             </div>
                         </div>
+                        <div class="current-setup-preview">
+                            <h4>Current Setup Parameters</h4>
+                            <div id="currentSetupDisplay" class="setup-preview-grid"></div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -53,62 +57,70 @@
             <!-- Telemetry Upload Section -->
             <section class="card">
                 <div class="card__header">
-                    <h2>2. Telemetry Data</h2>
+                    <h2>2. Telemetry Data Upload</h2>
                 </div>
                 <div class="card__body">
                     <div class="upload-area" id="uploadArea">
                         <div class="upload-content">
                             <div class="upload-icon">📊</div>
-                            <p>Drag and drop your telemetry CSV file here or click to select</p>
+                            <p>Upload ACC telemetry CSV with comprehensive data channels</p>
+                            <p class="upload-hint">Required: SPEED, STEERANGLE, G_LAT, ROTY, THROTTLE, BRAKE<br>
+                            Optional: WHEEL_SPEED_FL/FR/RL/RR for advanced analysis</p>
                             <button class="btn btn--secondary" onclick="document.getElementById('fileInput').click()">Browse Files</button>
                             <input type="file" id="fileInput" accept=".csv" class="hidden">
                         </div>
                     </div>
                     <div class="upload-actions">
-                        <button id="loadSampleBtn" class="btn btn--outline">Load Sample Data</button>
-                        <button id="processDataBtn" class="btn btn--primary hidden">Process Data</button>
+                        <button id="loadSampleBtn" class="btn btn--outline">Load Professional Sample</button>
+                        <button id="processDataBtn" class="btn btn--primary hidden">Analyze Telemetry</button>
                     </div>
-                    <div id="dataPreview" class="data-preview hidden">
-                        <h4>Data Preview</h4>
-                        <div id="previewTable"></div>
+                    <div id="dataValidation" class="data-validation hidden">
+                        <h4>Data Validation</h4>
+                        <div id="validationResults"></div>
                     </div>
                 </div>
             </section>
 
-            <!-- Analysis Results Section -->
+            <!-- Advanced Analysis Results Section -->
             <section id="analysisSection" class="card hidden">
                 <div class="card__header">
-                    <h2>3. Analysis Results</h2>
+                    <h2>3. Professional Analysis Results</h2>
                 </div>
                 <div class="card__body">
                     <div class="analysis-tabs">
-                        <button class="tab-btn active" data-tab="overview">Overview</button>
+                        <button class="tab-btn active" data-tab="overview">USOS Overview</button>
                         <button class="tab-btn" data-tab="telemetry">Telemetry Charts</button>
                         <button class="tab-btn" data-tab="corners">Corner Analysis</button>
+                        <button class="tab-btn" data-tab="wheel-slip">Wheel Slip</button>
+                        <button class="tab-btn" data-tab="yaw-analysis">Yaw Response</button>
                     </div>
                     
-                    <!-- Overview Tab -->
+                    <!-- USOS Overview Tab -->
                     <div id="overview" class="tab-content active">
                         <div class="metrics-grid">
-                            <div class="metric-card">
-                                <h4>Understeer Gradient</h4>
-                                <div class="metric-value" id="understeerGradient">-</div>
-                                <div class="metric-unit">deg/g</div>
+                            <div class="metric-card usos-card">
+                                <h4>USOS Factor</h4>
+                                <div class="metric-value" id="usosValue">-</div>
+                                <div class="metric-unit">weighted</div>
+                                <div class="metric-confidence">Confidence: <span id="usosConfidence">-</span>%</div>
                             </div>
-                            <div class="metric-card">
-                                <h4>Balance</h4>
-                                <div class="metric-value" id="balanceFactor">-</div>
-                                <div class="metric-unit">%</div>
+                            <div class="metric-card balance-card">
+                                <h4>Balance Distribution</h4>
+                                <div class="metric-value" id="balanceDistribution">-</div>
+                                <div class="metric-unit">US/N/OS %</div>
+                                <div class="balance-indicator" id="balanceIndicator"></div>
                             </div>
-                            <div class="metric-card">
-                                <h4>Peak Lateral G</h4>
-                                <div class="metric-value" id="peakLateralG">-</div>
-                                <div class="metric-unit">g</div>
+                            <div class="metric-card yaw-card">
+                                <h4>Yaw Response</h4>
+                                <div class="metric-value" id="yawResponse">-</div>
+                                <div class="metric-unit">deficit avg</div>
+                                <div class="metric-confidence">Peak Lateral: <span id="peakLateral">-</span>g</div>
                             </div>
-                            <div class="metric-card">
-                                <h4>Avg Speed</h4>
-                                <div class="metric-value" id="avgSpeed">-</div>
-                                <div class="metric-unit">km/h</div>
+                            <div class="metric-card slip-card">
+                                <h4>Traction Loss</h4>
+                                <div class="metric-value" id="tractionLoss">-</div>
+                                <div class="metric-unit">% of corners</div>
+                                <div class="metric-confidence">Avg Slip: <span id="avgSlip">-</span>%</div>
                             </div>
                         </div>
                     </div>
@@ -117,52 +129,97 @@
                     <div id="telemetry" class="tab-content">
                         <div class="chart-grid">
                             <div class="chart-container" style="position: relative; height: 300px;">
-                                <canvas id="telemetryChart"></canvas>
+                                <h4>USOS Heat Map</h4>
+                                <canvas id="usosChart"></canvas>
                             </div>
                             <div class="chart-container" style="position: relative; height: 300px;">
-                                <canvas id="understeerChart"></canvas>
+                                <h4>Vehicle Dynamics</h4>
+                                <canvas id="dynamicsChart"></canvas>
                             </div>
                         </div>
                     </div>
 
                     <!-- Corner Analysis Tab -->
                     <div id="corners" class="tab-content">
+                        <div class="corner-analysis-header">
+                            <h4>Corner-by-Corner Phase Analysis</h4>
+                            <div class="phase-legend">
+                                <span class="phase-entry">Entry</span>
+                                <span class="phase-apex">Apex</span>
+                                <span class="phase-exit">Exit</span>
+                            </div>
+                        </div>
                         <div id="cornersTable" class="corners-table"></div>
+                    </div>
+
+                    <!-- Wheel Slip Tab -->
+                    <div id="wheel-slip" class="tab-content">
+                        <div class="chart-container" style="position: relative; height: 400px;">
+                            <h4>Wheel Slip Ratio Analysis</h4>
+                            <canvas id="wheelSlipChart"></canvas>
+                        </div>
+                        <div class="slip-summary" id="slipSummary"></div>
+                    </div>
+
+                    <!-- Yaw Analysis Tab -->
+                    <div id="yaw-analysis" class="tab-content">
+                        <div class="chart-container" style="position: relative; height: 400px;">
+                            <h4>Expected vs Actual Yaw Rate</h4>
+                            <canvas id="yawChart"></canvas>
+                        </div>
+                        <div class="yaw-insights" id="yawInsights"></div>
                     </div>
                 </div>
             </section>
 
-            <!-- Setup Recommendations Section -->
+            <!-- Intelligent Setup Recommendations Section -->
             <section id="recommendationsSection" class="card hidden">
                 <div class="card__header">
-                    <h2>4. Setup Recommendations</h2>
+                    <h2>4. Intelligent Setup Recommendations (8 Groups)</h2>
+                    <p class="recommendations-subtitle">Parameter limit checking • Confidence ratings • Multiple alternatives per group</p>
                 </div>
                 <div class="card__body">
                     <div class="recommendations-grid">
-                        <div class="recommendation-category">
-                            <h4>🏁 Aerodynamics</h4>
+                        <div class="recommendation-group">
+                            <h4><span class="group-icon">🏁</span> Aerodynamics</h4>
                             <div id="aeroRecommendations" class="recommendations-list"></div>
                         </div>
-                        <div class="recommendation-category">
-                            <h4>🔧 Suspension</h4>
+                        <div class="recommendation-group">
+                            <h4><span class="group-icon">🔧</span> Suspension & ARBs</h4>
                             <div id="suspensionRecommendations" class="recommendations-list"></div>
                         </div>
-                        <div class="recommendation-category">
-                            <h4>⚡ Electronics</h4>
+                        <div class="recommendation-group">
+                            <h4><span class="group-icon">⚡</span> Electronics</h4>
                             <div id="electronicsRecommendations" class="recommendations-list"></div>
                         </div>
-                        <div class="recommendation-category">
-                            <h4>🏎️ Tires</h4>
+                        <div class="recommendation-group">
+                            <h4><span class="group-icon">🏎️</span> Tire Management</h4>
                             <div id="tiresRecommendations" class="recommendations-list"></div>
+                        </div>
+                        <div class="recommendation-group">
+                            <h4><span class="group-icon">📐</span> Alignment</h4>
+                            <div id="alignmentRecommendations" class="recommendations-list"></div>
+                        </div>
+                        <div class="recommendation-group">
+                            <h4><span class="group-icon">🔩</span> Dampers</h4>
+                            <div id="dampersRecommendations" class="recommendations-list"></div>
+                        </div>
+                        <div class="recommendation-group">
+                            <h4><span class="group-icon">⚙️</span> Differential</h4>
+                            <div id="differentialRecommendations" class="recommendations-list"></div>
+                        </div>
+                        <div class="recommendation-group">
+                            <h4><span class="group-icon">🛑</span> Brake System</h4>
+                            <div id="brakesRecommendations" class="recommendations-list"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Setup Tuning Section -->
+            <!-- Interactive Setup Tuning Section -->
             <section id="setupSection" class="card hidden">
                 <div class="card__header">
-                    <h2>5. Interactive Setup Tuning</h2>
+                    <h2>5. Interactive Setup Tuning with Live Validation</h2>
                 </div>
                 <div class="card__body">
                     <div class="setup-tabs">
@@ -170,6 +227,8 @@
                         <button class="setup-tab-btn" data-tab="suspension">Suspension</button>
                         <button class="setup-tab-btn" data-tab="electronics">Electronics</button>
                         <button class="setup-tab-btn" data-tab="tires">Tires</button>
+                        <button class="setup-tab-btn" data-tab="alignment">Alignment</button>
+                        <button class="setup-tab-btn" data-tab="dampers">Dampers</button>
                     </div>
 
                     <!-- Aero Setup -->
@@ -177,73 +236,150 @@
                         <div class="setup-controls">
                             <div class="control-group">
                                 <label>Front Splitter</label>
-                                <input type="range" id="splitter" class="setup-slider" min="0" max="5" step="1" value="2">
-                                <span class="control-value" id="splitterValue">2</span>
+                                <div class="control-wrapper">
+                                    <input type="range" id="splitter" class="setup-slider" min="0" max="5" step="1" value="2">
+                                    <span class="control-value" id="splitterValue">2</span>
+                                    <span class="control-limits" id="splitterLimits">0-5</span>
+                                </div>
+                                <div class="impact-preview" id="splitterImpact"></div>
                             </div>
                             <div class="control-group">
                                 <label>Rear Wing</label>
-                                <input type="range" id="wing" class="setup-slider" min="0" max="12" step="1" value="6">
-                                <span class="control-value" id="wingValue">6</span>
+                                <div class="control-wrapper">
+                                    <input type="range" id="wing" class="setup-slider" min="0" max="12" step="1" value="6">
+                                    <span class="control-value" id="wingValue">6</span>
+                                    <span class="control-limits" id="wingLimits">0-12</span>
+                                </div>
+                                <div class="impact-preview" id="wingImpact"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Suspension Setup -->
+                    <!-- Other setup tabs with similar structure -->
                     <div id="suspension" class="setup-tab-content">
                         <div class="setup-controls">
                             <div class="control-group">
                                 <label>Front ARB</label>
-                                <input type="range" id="ARBFront" class="setup-slider" min="0" max="30" step="1" value="15">
-                                <span class="control-value" id="ARBFrontValue">15</span>
+                                <div class="control-wrapper">
+                                    <input type="range" id="ARBFront" class="setup-slider" min="0" max="30" step="1" value="15">
+                                    <span class="control-value" id="ARBFrontValue">15</span>
+                                    <span class="control-limits" id="ARBFrontLimits">0-30</span>
+                                </div>
+                                <div class="impact-preview" id="ARBFrontImpact"></div>
                             </div>
                             <div class="control-group">
                                 <label>Rear ARB</label>
-                                <input type="range" id="ARBRear" class="setup-slider" min="0" max="30" step="1" value="18">
-                                <span class="control-value" id="ARBRearValue">18</span>
+                                <div class="control-wrapper">
+                                    <input type="range" id="ARBRear" class="setup-slider" min="0" max="30" step="1" value="18">
+                                    <span class="control-value" id="ARBRearValue">18</span>
+                                    <span class="control-limits" id="ARBRearLimits">0-30</span>
+                                </div>
+                                <div class="impact-preview" id="ARBRearImpact"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Electronics Setup -->
                     <div id="electronics" class="setup-tab-content">
                         <div class="setup-controls">
                             <div class="control-group">
                                 <label>TC1</label>
-                                <input type="range" id="tC1" class="setup-slider" min="0" max="11" step="1" value="4">
-                                <span class="control-value" id="tC1Value">4</span>
+                                <div class="control-wrapper">
+                                    <input type="range" id="tC1" class="setup-slider" min="0" max="11" step="1" value="4">
+                                    <span class="control-value" id="tC1Value">4</span>
+                                    <span class="control-limits" id="tC1Limits">0-11</span>
+                                </div>
+                                <div class="impact-preview" id="tC1Impact"></div>
                             </div>
                             <div class="control-group">
                                 <label>TC2</label>
-                                <input type="range" id="tC2" class="setup-slider" min="0" max="20" step="1" value="6">
-                                <span class="control-value" id="tC2Value">6</span>
+                                <div class="control-wrapper">
+                                    <input type="range" id="tC2" class="setup-slider" min="0" max="20" step="1" value="6">
+                                    <span class="control-value" id="tC2Value">6</span>
+                                    <span class="control-limits" id="tC2Limits">0-20</span>
+                                </div>
+                                <div class="impact-preview" id="tC2Impact"></div>
                             </div>
                             <div class="control-group">
                                 <label>ABS</label>
-                                <input type="range" id="abs" class="setup-slider" min="1" max="11" step="1" value="3">
-                                <span class="control-value" id="absValue">3</span>
+                                <div class="control-wrapper">
+                                    <input type="range" id="abs" class="setup-slider" min="1" max="11" step="1" value="3">
+                                    <span class="control-value" id="absValue">3</span>
+                                    <span class="control-limits" id="absLimits">1-11</span>
+                                </div>
+                                <div class="impact-preview" id="absImpact"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Tires Setup -->
                     <div id="tires" class="setup-tab-content">
                         <div class="setup-controls">
                             <div class="control-group">
                                 <label>Front Left Pressure</label>
-                                <input type="range" id="pressureLF" class="setup-slider" min="24.0" max="32.0" step="0.1" value="27.5">
-                                <span class="control-value" id="pressureLFValue">27.5</span>
+                                <div class="control-wrapper">
+                                    <input type="range" id="pressureLF" class="setup-slider" min="24.0" max="32.0" step="0.1" value="27.5">
+                                    <span class="control-value" id="pressureLFValue">27.5</span>
+                                    <span class="control-limits" id="pressureLFLimits">24-32</span>
+                                </div>
+                                <div class="impact-preview" id="pressureLFImpact"></div>
                             </div>
                             <div class="control-group">
                                 <label>Front Right Pressure</label>
-                                <input type="range" id="pressureRF" class="setup-slider" min="24.0" max="32.0" step="0.1" value="27.5">
-                                <span class="control-value" id="pressureRFValue">27.5</span>
+                                <div class="control-wrapper">
+                                    <input type="range" id="pressureRF" class="setup-slider" min="24.0" max="32.0" step="0.1" value="27.5">
+                                    <span class="control-value" id="pressureRFValue">27.5</span>
+                                    <span class="control-limits" id="pressureRFLimits">24-32</span>
+                                </div>
+                                <div class="impact-preview" id="pressureRFImpact"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="alignment" class="setup-tab-content">
+                        <div class="setup-controls">
+                            <div class="control-group">
+                                <label>Front Camber</label>
+                                <div class="control-wrapper">
+                                    <input type="range" id="camberFront" class="setup-slider" min="-4.0" max="-1.0" step="0.1" value="-2.8">
+                                    <span class="control-value" id="camberFrontValue">-2.8</span>
+                                    <span class="control-limits" id="camberFrontLimits">-4.0 to -1.0</span>
+                                </div>
+                                <div class="impact-preview" id="camberFrontImpact"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="dampers" class="setup-tab-content">
+                        <div class="setup-controls">
+                            <div class="control-group">
+                                <label>Front Bump Slow</label>
+                                <div class="control-wrapper">
+                                    <input type="range" id="bumpSlow" class="setup-slider" min="5" max="40" step="1" value="20">
+                                    <span class="control-value" id="bumpSlowValue">20</span>
+                                    <span class="control-limits" id="bumpSlowLimits">5-40</span>
+                                </div>
+                                <div class="impact-preview" id="bumpSlowImpact"></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="setup-actions">
                         <button id="resetSetupBtn" class="btn btn--outline">Reset to Default</button>
-                        <button id="exportSetupBtn" class="btn btn--primary">Export Setup</button>
+                        <button id="applyRecommendationsBtn" class="btn btn--secondary">Apply Top Recommendations</button>
+                        <button id="exportSetupBtn" class="btn btn--primary">Export Professional Setup</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analysis Report Section -->
+            <section id="reportSection" class="card hidden">
+                <div class="card__header">
+                    <h2>6. Professional Analysis Report</h2>
+                </div>
+                <div class="card__body">
+                    <div class="report-content">
+                        <div class="report-summary" id="reportSummary"></div>
+                        <div class="confidence-metrics" id="confidenceMetrics"></div>
+                        <div class="improvement-predictions" id="improvementPredictions"></div>
                     </div>
                 </div>
             </section>
