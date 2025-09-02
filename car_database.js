@@ -1,0 +1,714 @@
+
+// ACC Cars Database
+const ACC_CARS_DATA = [
+  {
+    "carId": "mercedes_amg_gt3",
+    "carName": "Mercedes-AMG GT3",
+    "carModelYear": 2015,
+    "carClass": "GT3",
+    "wheelbase": 2.665,
+    "setupParameters": {
+      "tyres": {
+        "pressureLF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.5
+        },
+        "pressureRF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.5
+        },
+        "pressureLR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.0
+        },
+        "pressureRR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.0
+        },
+        "toe": {
+          "min": [
+            -0.5,
+            -0.5,
+            -0.5,
+            -0.5
+          ],
+          "max": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "default": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "camber": {
+          "min": [
+            -4.0,
+            -4.0,
+            -3.0,
+            -3.0
+          ],
+          "max": [
+            -1.0,
+            -1.0,
+            -1.0,
+            -1.0
+          ],
+          "default": [
+            -2.8,
+            -2.8,
+            -2.0,
+            -2.0
+          ]
+        },
+        "caster": {
+          "min": [
+            6.0,
+            6.0
+          ],
+          "max": [
+            12.0,
+            12.0
+          ],
+          "default": [
+            8.5,
+            8.5
+          ]
+        }
+      },
+      "electronics": {
+        "tC1": {
+          "min": 0,
+          "max": 11,
+          "default": 4
+        },
+        "tC2": {
+          "min": 0,
+          "max": 20,
+          "default": 6
+        },
+        "abs": {
+          "min": 1,
+          "max": 11,
+          "default": 3
+        },
+        "brakeBias": {
+          "min": 50.0,
+          "max": 80.0,
+          "default": 65.0
+        }
+      },
+      "aero": {
+        "rideHeight": {
+          "min": [
+            50,
+            55
+          ],
+          "max": [
+            120,
+            120
+          ],
+          "default": [
+            65,
+            70
+          ]
+        },
+        "splitter": {
+          "min": 0,
+          "max": 5,
+          "default": 2
+        },
+        "wing": {
+          "min": 0,
+          "max": 12,
+          "default": 6
+        },
+        "brakeDucts": {
+          "min": [
+            0,
+            0
+          ],
+          "max": [
+            6,
+            6
+          ],
+          "default": [
+            2,
+            2
+          ]
+        }
+      },
+      "mechanicalGrip": {
+        "ARBFront": {
+          "min": 0,
+          "max": 30,
+          "default": 15
+        },
+        "ARBRear": {
+          "min": 0,
+          "max": 30,
+          "default": 18
+        },
+        "steerRatio": {
+          "min": 12,
+          "max": 18,
+          "default": 15
+        },
+        "preload": {
+          "min": 20,
+          "max": 200,
+          "default": 80
+        },
+        "wheelRate": {
+          "min": [
+            120,
+            120,
+            80,
+            80
+          ],
+          "max": [
+            200,
+            200,
+            160,
+            160
+          ],
+          "default": [
+            160,
+            160,
+            120,
+            120
+          ]
+        },
+        "bumpstopRate": {
+          "min": [
+            50,
+            50,
+            50,
+            50
+          ],
+          "max": [
+            300,
+            300,
+            300,
+            300
+          ],
+          "default": [
+            150,
+            150,
+            100,
+            100
+          ]
+        },
+        "bumpstopRange": {
+          "min": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "max": [
+            50,
+            50,
+            50,
+            50
+          ],
+          "default": [
+            10,
+            10,
+            8,
+            8
+          ]
+        }
+      },
+      "dampers": {
+        "bumpSlow": {
+          "min": [
+            5,
+            5,
+            5,
+            5
+          ],
+          "max": [
+            40,
+            40,
+            40,
+            40
+          ],
+          "default": [
+            20,
+            20,
+            18,
+            18
+          ]
+        },
+        "reboundSlow": {
+          "min": [
+            5,
+            5,
+            5,
+            5
+          ],
+          "max": [
+            40,
+            40,
+            40,
+            40
+          ],
+          "default": [
+            25,
+            25,
+            22,
+            22
+          ]
+        },
+        "bumpFast": {
+          "min": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "max": [
+            20,
+            20,
+            20,
+            20
+          ],
+          "default": [
+            8,
+            8,
+            6,
+            6
+          ]
+        },
+        "reboundFast": {
+          "min": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "max": [
+            20,
+            20,
+            20,
+            20
+          ],
+          "default": [
+            10,
+            10,
+            8,
+            8
+          ]
+        }
+      }
+    }
+  },
+  {
+    "carId": "mercedes_amg_gt3_evo",
+    "carName": "Mercedes-AMG GT3 Evo",
+    "carModelYear": 2020,
+    "carClass": "GT3",
+    "wheelbase": 2.665,
+    "setupParameters": {
+      "tyres": {
+        "pressureLF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.5
+        },
+        "pressureRF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.5
+        },
+        "pressureLR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.0
+        },
+        "pressureRR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.0
+        }
+      },
+      "electronics": {
+        "tC1": {
+          "min": 0,
+          "max": 11,
+          "default": 4
+        },
+        "tC2": {
+          "min": 0,
+          "max": 20,
+          "default": 6
+        },
+        "abs": {
+          "min": 1,
+          "max": 11,
+          "default": 3
+        }
+      },
+      "aero": {
+        "rideHeight": {
+          "min": [
+            50,
+            55
+          ],
+          "max": [
+            120,
+            120
+          ],
+          "default": [
+            65,
+            70
+          ]
+        },
+        "splitter": {
+          "min": 0,
+          "max": 5,
+          "default": 2
+        },
+        "wing": {
+          "min": 0,
+          "max": 12,
+          "default": 6
+        }
+      },
+      "mechanicalGrip": {
+        "ARBFront": {
+          "min": 0,
+          "max": 30,
+          "default": 15
+        },
+        "ARBRear": {
+          "min": 0,
+          "max": 30,
+          "default": 18
+        }
+      }
+    }
+  },
+  {
+    "carId": "bmw_m4_gt3",
+    "carName": "BMW M4 GT3",
+    "carModelYear": 2021,
+    "carClass": "GT3",
+    "wheelbase": 2.81,
+    "setupParameters": {
+      "tyres": {
+        "pressureLF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.2
+        },
+        "pressureRF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.2
+        },
+        "pressureLR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.8
+        },
+        "pressureRR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.8
+        }
+      },
+      "electronics": {
+        "tC1": {
+          "min": 0,
+          "max": 11,
+          "default": 5
+        },
+        "tC2": {
+          "min": 0,
+          "max": 20,
+          "default": 7
+        },
+        "abs": {
+          "min": 1,
+          "max": 11,
+          "default": 4
+        }
+      },
+      "aero": {
+        "rideHeight": {
+          "min": [
+            48,
+            52
+          ],
+          "max": [
+            115,
+            115
+          ],
+          "default": [
+            62,
+            68
+          ]
+        },
+        "splitter": {
+          "min": 0,
+          "max": 4,
+          "default": 1
+        },
+        "wing": {
+          "min": 0,
+          "max": 15,
+          "default": 8
+        }
+      },
+      "mechanicalGrip": {
+        "ARBFront": {
+          "min": 0,
+          "max": 30,
+          "default": 12
+        },
+        "ARBRear": {
+          "min": 0,
+          "max": 30,
+          "default": 16
+        }
+      }
+    }
+  },
+  {
+    "carId": "audi_r8_lms_evo",
+    "carName": "Audi R8 LMS Evo",
+    "carModelYear": 2019,
+    "carClass": "GT3",
+    "wheelbase": 2.65,
+    "setupParameters": {
+      "tyres": {
+        "pressureLF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.8
+        },
+        "pressureRF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.8
+        },
+        "pressureLR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.2
+        },
+        "pressureRR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.2
+        }
+      }
+    }
+  },
+  {
+    "carId": "ferrari_488_gt3_evo",
+    "carName": "Ferrari 488 GT3 Evo",
+    "carModelYear": 2020,
+    "carClass": "GT3",
+    "wheelbase": 2.65,
+    "setupParameters": {
+      "tyres": {
+        "pressureLF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.6
+        },
+        "pressureRF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.6
+        },
+        "pressureLR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.0
+        },
+        "pressureRR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.0
+        }
+      }
+    }
+  },
+  {
+    "carId": "lamborghini_huracan_gt3_evo",
+    "carName": "Lamborghini Hurac\u00e1n GT3 Evo",
+    "carModelYear": 2019,
+    "carClass": "GT3",
+    "wheelbase": 2.62,
+    "setupParameters": {
+      "tyres": {
+        "pressureLF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.4
+        },
+        "pressureRF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.4
+        },
+        "pressureLR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.9
+        },
+        "pressureRR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.9
+        }
+      }
+    }
+  },
+  {
+    "carId": "porsche_911_gt3_r",
+    "carName": "Porsche 911 GT3 R",
+    "carModelYear": 2018,
+    "carClass": "GT3",
+    "wheelbase": 2.45,
+    "setupParameters": {
+      "tyres": {
+        "pressureLF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.0
+        },
+        "pressureRF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.0
+        },
+        "pressureLR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.5
+        },
+        "pressureRR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.5
+        }
+      }
+    }
+  },
+  {
+    "carId": "mclaren_720s_gt3",
+    "carName": "McLaren 720S GT3",
+    "carModelYear": 2019,
+    "carClass": "GT3",
+    "wheelbase": 2.67,
+    "setupParameters": {
+      "tyres": {
+        "pressureLF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.7
+        },
+        "pressureRF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.7
+        },
+        "pressureLR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.1
+        },
+        "pressureRR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 27.1
+        }
+      }
+    }
+  },
+  {
+    "carId": "alpine_a110_gt4",
+    "carName": "Alpine A110 GT4",
+    "carModelYear": 2018,
+    "carClass": "GT4",
+    "wheelbase": 2.42,
+    "setupParameters": {
+      "tyres": {
+        "pressureLF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.5
+        },
+        "pressureRF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.5
+        },
+        "pressureLR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.0
+        },
+        "pressureRR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.0
+        }
+      }
+    }
+  },
+  {
+    "carId": "bmw_m4_gt4",
+    "carName": "BMW M4 GT4",
+    "carModelYear": 2018,
+    "carClass": "GT4",
+    "wheelbase": 2.81,
+    "setupParameters": {
+      "tyres": {
+        "pressureLF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.8
+        },
+        "pressureRF": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.8
+        },
+        "pressureLR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.2
+        },
+        "pressureRR": {
+          "min": 24.0,
+          "max": 32.0,
+          "default": 26.2
+        }
+      }
+    }
+  }
+];
+
+// Helper function to get car by ID
+function getCarById(carId) {
+    return ACC_CARS_DATA.find(car => car.carId === carId);
+}
+
+// Helper function to get cars by class
+function getCarsByClass(carClass) {
+    return ACC_CARS_DATA.filter(car => car.carClass === carClass);
+}
